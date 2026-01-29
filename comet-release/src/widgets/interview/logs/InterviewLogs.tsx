@@ -1,0 +1,34 @@
+import { useState } from 'react'
+import type { UuId } from '@shared/types'
+import { DEFAULT_PAGINATION_LIMIT } from '@shared/constants'
+import { LogsSheet } from '@entities/logs'
+
+import { useFetchInterviewLogsQuery } from './hooks'
+
+type Props = {
+    interview_uuid: UuId
+    request_uuid: UuId
+    position_uuid: UuId
+    open: boolean
+    onOpenChange: (value: boolean) => void
+}
+export function InterviewLogs({ interview_uuid, request_uuid, position_uuid, open, onOpenChange }: Props) {
+    const [limit, setLimit] = useState<number>(DEFAULT_PAGINATION_LIMIT)
+    const { data, error, isPending } = useFetchInterviewLogsQuery({
+        interview_uuid,
+        request_uuid,
+        position_uuid,
+        limit,
+        open,
+    })
+    return (
+        <LogsSheet
+            data={data}
+            open={open}
+            onOpenChange={onOpenChange}
+            isPending={isPending}
+            error={error}
+            setLimit={setLimit}
+        />
+    )
+}

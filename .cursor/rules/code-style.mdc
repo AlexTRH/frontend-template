@@ -1,0 +1,19 @@
+---
+description: Naming, TypeScript, comments, styling, tests
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Code Style
+
+**Naming**: Files `kebab-case`. Components PascalCase. Functions/vars camelCase. Constants UPPER_SNAKE_CASE. Handlers `handle*` (handleSubmit, handleClick). Prefer `const` for functions.
+
+**TypeScript**: Strict types; no `any` without reason. Types in slice `model/types.ts`. `type` for aliases, `interface` for extendable objects. Props: interface. `as const` for literal objects.
+
+**Comments**: Prefer self-documenting code. Do not add redundant explanatory comments. JSDoc only for public API. Keep existing comments unless they become irrelevant after a change.
+
+**UI classes**: Use `cn()` (from `@shared/lib/ui` or project equivalent) for conditional Tailwind classes; avoid long ternaries. Tailwind for styling; no inline styles for static layout.
+
+**Quality**: One responsibility per function; early returns. DRY: extract to shared/utils or components. SOLID where it helps (SRP, DI).
+
+**Tests**: Unit tests for critical logic; mock API (e.g. MSW). Integration for key flows (form → submit → result).

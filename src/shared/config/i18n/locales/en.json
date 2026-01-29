@@ -1,0 +1,9 @@
+{
+    "common": {
+        "title": "Frontend Template",
+        "home": "Home",
+        "notFound": "Page not found",
+        "createItem": "Create item",
+        "itemTitle": "Title"
+    }
+}
