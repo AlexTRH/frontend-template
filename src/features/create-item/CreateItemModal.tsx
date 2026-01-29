@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Input } from '@shared/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form'
@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from '@shared/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { createItemSchema, type CreateItemFormValue } from './model'
+import { getCreateItemSchema, type CreateItemFormValue } from './model'
 import { useCreateItemMutation } from './hooks'
 
 type CreateItemModalProps = {
@@ -19,9 +19,10 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
     const { t } = useTranslation()
     const [open, setOpen] = useState(false)
     const mutation = useCreateItemMutation()
+    const schema = useMemo(() => getCreateItemSchema((key, opts) => t(key, opts)), [t])
 
     const form = useForm<CreateItemFormValue>({
-        resolver: zodResolver(createItemSchema),
+        resolver: zodResolver(schema),
         defaultValues: { title: '' },
     })
 

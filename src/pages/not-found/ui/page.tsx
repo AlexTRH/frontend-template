@@ -10,7 +10,7 @@ export function NotFoundPage() {
         <div className="fullscreen-center flex flex-col gap-4">
             <h1 className="text-2xl font-bold">{t('common:common.notFound')}</h1>
             <Button asChild>
-                <Link to={RoutePath[AppRoutes.HOME]}>Go home</Link>
+                <Link to={RoutePath[AppRoutes.DASHBOARD]}>{t('common:common.goHome')}</Link>
             </Button>
         </div>
     )

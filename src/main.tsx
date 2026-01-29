@@ -8,10 +8,15 @@ const useMsw = import.meta.env.DEV && import.meta.env.VITE_USE_MSW === 'true'
 
 async function bootstrap() {
     if (useMsw) {
-        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- dynamic MSW worker */
-        const { worker } = await import('./mocks/browser')
-        await worker.start({ onUnhandledRequest: 'bypass', quiet: true })
-        /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+        try {
+            const { worker } = await import('./mocks/browser')
+            await Promise.race([
+                worker.start({ onUnhandledRequest: 'bypass', quiet: true }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('MSW start timeout')), 5000)),
+            ])
+        } catch (e) {
+            console.warn('[MSW] Failed to start, running without mocks.', e)
+        }
     }
     const root = document.getElementById('root')!
     createRoot(root).render(

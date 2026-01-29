@@ -1,6 +1,8 @@
+import { toast } from 'sonner'
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
+const useMsw = import.meta.env.DEV && import.meta.env.VITE_USE_MSW === 'true'
+const API_BASE_URL = useMsw ? '/api' : (import.meta.env.VITE_API_URL ?? '/api')
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -21,8 +23,13 @@ apiClient.interceptors.response.use(
     (response) => response,
     (error: unknown) => {
         const axiosError = error as AxiosError
-        if (axiosError.response?.status === 401) {
+        const status = axiosError.response?.status
+        if (status === 401) {
             localStorage.removeItem('token')
+        } else if (status === 403) {
+            toast.error('Access denied')
+        } else if (status && status >= 500) {
+            toast.error('Server error. Try again later.')
         }
         return Promise.reject(error instanceof Error ? error : new Error(String(error)))
     }

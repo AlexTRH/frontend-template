@@ -30,21 +30,52 @@ npm install   # или  yarn
 npm run dev   # или  yarn dev
 ```
 
+**Первый запуск (для новичка):** открой приложение в браузере — попадёшь на страницу входа. Можно:
+
+- нажать **«Демо-вход»** — сразу попадёшь в приложение и сможешь посмотреть дашборд, список Items, создать элемент, переключить тему и язык;
+- или ввести любой email и пароль (от 6 символов) и нажать «Войти» — моки позволят войти без бэкенда (если в `.env` указано `VITE_USE_MSW=true`).
+
+После входа доступны: Dashboard, страница Items (поиск, фильтр, пагинация, создание), переключатель темы и языка в header, выход через меню профиля.
+
 Остальные скрипты те же: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit`. Используй один менеджер пакетов: после клона выполни только `npm install` **или** только `yarn` — в репо должен быть один lock-файл (`package-lock.json` или `yarn.lock`).
 
 1. Правила для AI — `cursor-rules-portable.md` и `.cursor/rules/`
-3. Примеры: страница `pages/home`, сущность `entities/item`, фича `features/create-item` (форма с Zod, модалка, вызов API)
+2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки).
+3. Примеры: страницы `pages/dashboard`, `pages/items`, `pages/settings`, `pages/login`, сущность `entities/item`, фичи `features/create-item`, `features/auth`, `features/theme-toggle` (форма с Zod, модалка, вызов API).
 
 ## Что уже есть в костяке
 
 - **app**: main, providers (Router, Theme, Query, ErrorBoundary, i18n), роутер с конфигом
-- **shared**: axios-клиент (`api/client.ts`), path aliases, типы, контекст темы, i18n (en/ru), UI (Button, Input, Label, Form, Dialog, PageLoader, Error, Toaster)
-- **entities/item**: типы, API `fetchItems`, хук `useItemsQuery` (при отсутствии бэкенда возвращается `[]`)
-- **features/create-item**: модалка, форма (RHF + Zod), мутация `createItem`, инвалидация списка
-- **pages**: home (список + кнопка создания), not-found
+- **shared**: axios-клиент (`api/client.ts`), path aliases, типы, контекст темы, i18n (en/ru), UI (Button, Input, Label, Form, Dialog, Card, Table, PageLoader, Error, Toaster)
+- **widgets/layouts/main-layout**: сайдбар (Dashboard, Items, Settings), header (тема + язык + user menu), `<Outlet />`
+- **entities/item**, **entities/user**: типы, API, хуки (например `useItemsQuery`)
+- **features/create-item**, **features/auth**, **features/theme-toggle**: модалка создания, логин/демо-вход, переключатель темы; валидация форм через Zod с переводами (`getLoginSchema(t)`, `getCreateItemSchema(t)`)
+- **pages**: **Dashboard**, **Items** (таблица, поиск, фильтр, пагинация), **Settings**, **Login** (форма + демо-вход), not-found
+- **shared**: api/client (interceptors: token, 401/403/5xx + toast), store/auth (Zustand + persist), config/constants (пример констант), config/i18n (en/ru), UI-компоненты
+- **i18n**: тексты в `common`, `dashboard`, `items`, `login`, `settings`, `validation` (en + ru)
+- **MSW**: при `VITE_USE_MSW=true` — список items, создание, логин без бэкенда
 
 Бэкенд не обязателен для запуска: список items без API пока пустой; при добавлении `VITE_API_URL` и endpoint'а `/items` всё подхватится.
 
 **MSW (моки в dev):** в `.env` задай `VITE_USE_MSW=true` — тогда без бэкенда будут работать список и создание items (моки в `src/mocks/`).
 
 **Layout:** общий header (название, переключатель темы, переключатель языка) и контент страниц через `<Outlet />` в `widgets/layouts/main-layout`.
+
+## Переменные окружения (.env)
+
+| Переменная     | Описание                                                                                                                                                                                                    |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_API_URL` | Базовый URL API (например `http://localhost:3000/api`). Не задан — запросы идут на `/api` (тот же хост). В dev при `VITE_USE_MSW=true` игнорируется: запросы всегда на тот же хост, чтобы перехватывал MSW. |
+| `VITE_USE_MSW` | `true` — включить моки (MSW) в dev: список items, создание, логин работают без бэкенда.                                                                                                                     |
+
+См. `.env.example`. Типы для переменных — в `src/app/types/vite-env.d.ts`.
+
+## Типичные проблемы
+
+- **Белый экран** — проверь консоль. Если ошибка про `mockServiceWorker.js` или MIME type: в `public/` должен лежать `mockServiceWorker.js` (сгенерировать: `npx msw init public/`). Если лоадер крутится бесконечно: подожди до 5 сек или обнови страницу (есть fallback гидрации).
+- **Не пускает после логина / редирект на логин** — включи `VITE_USE_MSW=true` в `.env` или используй кнопку «Демо-вход» на странице логина.
+- **Запросы не идут / 404 на API** — при включённом MSW в dev `baseURL` принудительно `/api`; при выключенном MSW задай `VITE_API_URL` на твой бэкенд.
+
+## Доступность (a11y)
+
+В шаблоне: семантичная разметка, `aria-hidden` у декоративных иконок, фокус на интерактиве. При добавлении своих страниц и форм используй осмысленные `label`, не убирай outline без замены на видимый focus-стиль.

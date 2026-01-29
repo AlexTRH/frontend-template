@@ -1,9 +1,90 @@
 {
     "common": {
         "title": "Frontend Template",
+        "nav": {
+            "dashboard": "Dashboard",
+            "items": "Items",
+            "settings": "Settings"
+        },
         "home": "Home",
         "notFound": "Page not found",
         "createItem": "Create item",
-        "itemTitle": "Title"
+        "itemTitle": "Title",
+        "goHome": "Go home",
+        "breadcrumbs": {
+            "dashboard": "Dashboard",
+            "items": "Items",
+            "settings": "Settings"
+        },
+        "profile": {
+            "settings": "Settings",
+            "logout": "Log out"
+        }
+    },
+    "dashboard": {
+        "welcome": "Welcome back",
+        "subtitle": "Here’s what’s happening with your project today.",
+        "totalItems": "Total items",
+        "activeItems": "Active",
+        "draftItems": "Draft",
+        "recentItems": "Recent items",
+        "viewAll": "View all",
+        "chartPlaceholder": "Chart area — connect your data or use a library like Recharts."
+    },
+    "login": {
+        "login": {
+            "title": "Sign in",
+            "subtitle": "Enter your credentials to continue.",
+            "hint": "First time? Use any email + password (6+ chars), or click Demo login to try the app.",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Sign in",
+            "submitting": "Signing in...",
+            "success": "Signed in successfully",
+            "demoSuccess": "Welcome! Feel free to explore the template.",
+            "demoButton": "Demo login — try the app",
+            "or": "or",
+            "error": "Invalid credentials"
+        }
+    },
+    "settings": {
+        "settings": {
+            "title": "Settings",
+            "subtitle": "Manage app and account preferences.",
+            "general": "General",
+            "generalDescription": "Theme, language, and other options.",
+            "comingSoon": "More options coming soon. Add your settings form here."
+        }
+    },
+    "validation": {
+        "required": "Required",
+        "email": "Invalid email",
+        "minLength": "At least {{count}} characters",
+        "maxLength": "At most {{count}} characters"
+    },
+    "items": {
+        "title": "Items",
+        "subtitle": "Manage your items. Create, edit, or archive.",
+        "searchPlaceholder": "Search by title...",
+        "filterAll": "All",
+        "table": {
+            "id": "ID",
+            "title": "Title",
+            "status": "Status",
+            "createdAt": "Created"
+        },
+        "status": {
+            "active": "Active",
+            "draft": "Draft",
+            "archived": "Archived"
+        },
+        "empty": "No items yet. Create one to get started.",
+        "loading": "Loading...",
+        "noMatches": "No matches",
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "pageOf": "Page {{current}} of {{total}}"
+        }
     }
 }
