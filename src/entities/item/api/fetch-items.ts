@@ -1,8 +1,9 @@
+import { QUERY_KEYS } from '@shared/constants'
 import { apiClient } from '@shared/api'
 
 import type { Item } from '../model'
 
-export const ITEMS_QUERY_KEY = ['items'] as const
+export const ITEMS_QUERY_KEY = [QUERY_KEYS.ITEMS] as const
 
 export async function fetchItems(): Promise<Item[]> {
     try {

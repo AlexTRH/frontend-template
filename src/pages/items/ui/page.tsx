@@ -7,35 +7,37 @@ import { Input } from '@shared/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card'
 import { Button } from '@shared/ui/button'
 import { Breadcrumbs } from '@shared/ui/breadcrumbs'
+import { Badge } from '@shared/ui/badge'
+import { useDebounce } from '@shared/hooks'
+import { DEFAULT_PAGINATION_LIMIT } from '@shared/constants'
 import { AppRoutes, RoutePath } from '@shared/config/router'
 import { CreateItemModal } from '@features/create-item'
 import { useItemsQuery } from '@entities/item'
 import type { ItemStatus } from '@entities/item'
 
-const PAGE_SIZE = 10
-
 export function ItemsPage() {
     const { t } = useTranslation()
     const { data: items, isLoading } = useItemsQuery()
     const [searchQuery, setSearchQuery] = useState('')
+    const debouncedSearch = useDebounce(searchQuery, 300)
     const [statusFilter, setStatusFilter] = useState<ItemStatus | 'all'>('all')
     const [page, setPage] = useState(0)
 
     const filteredItems = useMemo(() => {
         if (!items) return []
         return items.filter((item) => {
-            const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+            const matchesSearch = item.title.toLowerCase().includes(debouncedSearch.toLowerCase().trim())
             const matchesStatus = statusFilter === 'all' || item.status === statusFilter
             return matchesSearch && matchesStatus
         })
-    }, [items, searchQuery, statusFilter])
+    }, [items, debouncedSearch, statusFilter])
 
     const paginatedItems = useMemo(() => {
-        const start = page * PAGE_SIZE
-        return filteredItems.slice(start, start + PAGE_SIZE)
+        const start = page * DEFAULT_PAGINATION_LIMIT
+        return filteredItems.slice(start, start + DEFAULT_PAGINATION_LIMIT)
     }, [filteredItems, page])
 
-    const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE) || 1
+    const totalPages = Math.ceil(filteredItems.length / DEFAULT_PAGINATION_LIMIT) || 1
 
     const formatDate = (dateStr: string) => {
         return new Date(dateStr).toLocaleDateString(undefined, {
@@ -129,7 +131,19 @@ export function ItemsPage() {
                                                 {item.id.slice(0, 8)}…
                                             </TableCell>
                                             <TableCell className="font-medium">{item.title}</TableCell>
-                                            <TableCell>{t(`items:items.status.${item.status}`)}</TableCell>
+                                            <TableCell>
+                                                <Badge
+                                                    variant={
+                                                        item.status === 'active'
+                                                            ? 'default'
+                                                            : item.status === 'draft'
+                                                              ? 'secondary'
+                                                              : 'outline'
+                                                    }
+                                                >
+                                                    {t(`items:items.status.${item.status}`)}
+                                                </Badge>
+                                            </TableCell>
                                             <TableCell className="text-muted-foreground text-sm">
                                                 {formatDate(item.createdAt)}
                                             </TableCell>

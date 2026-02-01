@@ -15,11 +15,11 @@ export const handlers = [
         return HttpResponse.json(store)
     }),
     http.post('/api/items', async ({ request }: { request: Request }) => {
-        const body = (await request.json()) as { title: string }
+        const body = (await request.json()) as { title: string; status?: Item['status'] }
         const newItem: Item = {
             id: crypto.randomUUID(),
             title: body.title ?? '',
-            status: 'active',
+            status: body.status ?? 'active',
             createdAt: new Date().toISOString(),
         }
         store.push(newItem)

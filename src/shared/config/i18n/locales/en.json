@@ -53,7 +53,13 @@
             "subtitle": "Manage app and account preferences.",
             "general": "General",
             "generalDescription": "Theme, language, and other options.",
-            "comingSoon": "More options coming soon. Add your settings form here."
+            "comingSoon": "More options coming soon. Add your settings form here.",
+            "tabs": {
+                "general": "General",
+                "notifications": "Notifications"
+            },
+            "notificationsEmail": "Email notifications",
+            "notificationsEmailDescription": "Receive updates and reminders by email."
         }
     },
     "validation": {
