@@ -4,6 +4,8 @@ import { PageLoader } from '@shared/ui/page-loader'
 import { useAuthStore } from '@shared/store/auth'
 import { AppRoutes, RoutePath } from '@shared/config/router'
 
+// Zustand persist восстанавливает user из localStorage асинхронно. Пока _hasHydrated === false,
+// не редиректим на логин — иначе после перезагрузки сразу улетим на /login до гидрации.
 const HYDRATE_TIMEOUT_MS = 500
 
 export function RequireAuth() {
@@ -12,6 +14,7 @@ export function RequireAuth() {
     const setHasHydrated = useAuthStore((s) => s.setHasHydrated)
     const fallbackDone = useRef(false)
 
+    // Fallback: если persist так и не вызвал onRehydrate, через HYDRATE_TIMEOUT_MS считаем гидрацию завершённой.
     useEffect(() => {
         if (hasHydrated || fallbackDone.current) return
         const t = setTimeout(() => {

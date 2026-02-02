@@ -1,6 +1,7 @@
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import { Settings as SettingsIcon } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Settings as SettingsIcon, Upload } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@shared/ui/tooltip'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui/tabs'
 import { Switch } from '@shared/ui/switch'
@@ -13,12 +14,16 @@ import { Button } from '@shared/ui/button'
 import { Breadcrumbs } from '@shared/ui/breadcrumbs'
 import { useLocalStorage } from '@shared/hooks'
 import { AppRoutes, RoutePath } from '@shared/config/router'
+import { apiClient } from '@shared/api'
 
 export function SettingsPage() {
     const { t } = useTranslation()
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [sheetOpen, setSheetOpen] = useState(false)
     const [isPending, setIsPending] = useState(false)
+    const [uploadFile, setUploadFile] = useState<File | null>(null)
+    const [uploading, setUploading] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
     const [emailNotifications, setEmailNotifications] = useLocalStorage('settings-email-notifications', true)
 
     const handleConfirmDemo = () => {
@@ -27,6 +32,28 @@ export function SettingsPage() {
             setIsPending(false)
             setConfirmOpen(false)
         }, 500)
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        setUploadFile(file ?? null)
+    }
+
+    const handleUpload = async () => {
+        if (!uploadFile) return
+        setUploading(true)
+        try {
+            const formData = new FormData()
+            formData.append('file', uploadFile)
+            await apiClient.post('/upload', formData)
+            toast.success(t('settings.settings.uploadSuccess'))
+            setUploadFile(null)
+            if (fileInputRef.current) fileInputRef.current.value = ''
+        } catch {
+            toast.error('Upload failed')
+        } finally {
+            setUploading(false)
+        }
     }
 
     return (
@@ -85,43 +112,76 @@ export function SettingsPage() {
             <Separator />
             <Card>
                 <CardHeader>
-                    <CardTitle>Example: confirmation modal</CardTitle>
-                    <CardDescription>
-                        ConfirmationWindowTrigger (AlertDialog) — for confirm/cancel actions. ModalWindowTrigger — for
-                        forms in a modal (see Create Item on Items page).
-                    </CardDescription>
+                    <CardTitle>{t('settings.settings.examples.confirmationTitle')}</CardTitle>
+                    <CardDescription>{t('settings.settings.examples.confirmationDescription')}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <ConfirmationWindowTrigger
                         open={confirmOpen}
                         onOpenChange={setConfirmOpen}
-                        btnTrigger="Open confirmation"
-                        question="Are you sure?"
-                        description="This is a demo. Nothing will be deleted."
-                        cancelBtn="Cancel"
-                        okBtn="Confirm"
+                        btnTrigger={t('settings.settings.examples.openConfirmation')}
+                        question={t('settings.settings.examples.confirmQuestion')}
+                        description={t('settings.settings.examples.confirmDescription')}
+                        cancelBtn={t('settings.settings.examples.cancel')}
+                        okBtn={t('settings.settings.examples.confirm')}
                         handleConfirm={handleConfirmDemo}
                         isPending={isPending}
                     />
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger asChild>
-                            <Button variant="outline">Open side panel</Button>
+                            <Button variant="outline">{t('settings.settings.examples.openSheet')}</Button>
                         </SheetTrigger>
-                        <SheetContent side="right">
+                        <SheetContent side="right" className="gap-0">
                             <SheetHeader>
-                                <SheetTitle>Example: Sheet</SheetTitle>
+                                <SheetTitle>{t('settings.settings.examples.sheetTitle')}</SheetTitle>
                             </SheetHeader>
-                            <p className="text-muted-foreground text-sm">
-                                Sheet slides in from the side. Use for filters, details, or secondary actions.
-                            </p>
+                            <div className="flex-1 overflow-auto px-6 py-5">
+                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                    {t('settings.settings.examples.sheetDescription')}
+                                </p>
+                            </div>
                         </SheetContent>
                     </Sheet>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline">Hover for tooltip</Button>
+                            <Button variant="outline">{t('settings.settings.examples.tooltipTrigger')}</Button>
                         </TooltipTrigger>
-                        <TooltipContent>This is a tooltip. Use for short hints.</TooltipContent>
+                        <TooltipContent>{t('settings.settings.examples.tooltipContent')}</TooltipContent>
                     </Tooltip>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t('settings.settings.fileUpload')}</CardTitle>
+                    <CardDescription>{t('settings.settings.fileUploadDescription')}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                        className="text-muted-foreground file:mr-2 file:rounded file:border-0 file:bg-primary file:px-4 file:py-2 file:text-primary-foreground file:text-sm"
+                        aria-label={t('settings.settings.upload')}
+                    />
+                    {uploadFile && (
+                        <p className="text-muted-foreground text-sm">
+                            {t('settings.settings.fileSelected', {
+                                name: uploadFile.name,
+                                size: uploadFile.size,
+                            })}
+                        </p>
+                    )}
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={!uploadFile || uploading}
+                        onClick={handleUpload}
+                        className="gap-1"
+                    >
+                        <Upload className="size-4" aria-hidden />
+                        {uploading ? '...' : t('settings.settings.upload')}
+                    </Button>
                 </CardContent>
             </Card>
         </div>

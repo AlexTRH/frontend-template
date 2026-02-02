@@ -23,22 +23,22 @@ export function UserMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm" className="h-10 gap-2 py-2">
                     <span className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
                         <User className="size-4" />
                     </span>
-                    <span className="hidden sm:inline">{user?.name ?? user?.email ?? 'User'}</span>
+                    <span className="hidden sm:inline">{user?.name ?? user?.email ?? t('common.user')}</span>
                     <ChevronDown className="size-4 opacity-50" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={handleSettings}>
                     <Settings className="size-4" />
-                    {t('common:common.profile.settings')}
+                    {t('common.profile.settings')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
                     <LogOut className="size-4" />
-                    {t('common:common.profile.logout')}
+                    {t('common.profile.logout')}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

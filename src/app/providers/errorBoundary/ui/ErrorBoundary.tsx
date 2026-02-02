@@ -29,7 +29,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         const { children } = this.props
 
         if (hasError) {
-            return <Error />
+            return (
+                <div className="bg-background flex min-h-screen items-center justify-center p-6">
+                    <Error />
+                </div>
+            )
         }
 
         return children

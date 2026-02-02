@@ -1,15 +1,48 @@
 {
     "common": {
         "title": "Frontend Template",
+        "pageTitle": {
+            "dashboard": "Dashboard",
+            "items": "Items",
+            "itemDetail": "Item details",
+            "settings": "Settings",
+            "login": "Sign in",
+            "components": "Components",
+            "notFound": "Page not found"
+        },
+        "footer": "Frontend Template",
+        "close": "Close",
+        "reload": "Reload",
+        "user": "User",
+        "errorTitle": "Something went wrong",
+        "errorDescription": "Please try to reload the page.",
+        "aria": {
+            "close": "Close",
+            "language": "Language",
+            "theme": "Theme",
+            "breadcrumb": "Breadcrumb",
+            "skipToContent": "Skip to main content",
+            "menu": "Open menu",
+            "mainNav": "Main navigation"
+        },
         "nav": {
             "dashboard": "Dashboard",
             "items": "Items",
-            "settings": "Settings"
+            "settings": "Settings",
+            "components": "Components"
         },
         "home": "Home",
         "notFound": "Page not found",
         "createItem": "Create item",
+        "create": "Create",
+        "creating": "Creating...",
+        "editItem": "Edit item",
+        "edit": "Edit",
+        "saving": "Saving...",
         "itemTitle": "Title",
+        "discardChanges": "Discard unsaved changes?",
+        "discard": "Discard",
+        "login": "Log in",
         "goHome": "Go home",
         "breadcrumbs": {
             "dashboard": "Dashboard",
@@ -29,7 +62,8 @@
         "draftItems": "Draft",
         "recentItems": "Recent items",
         "viewAll": "View all",
-        "chartPlaceholder": "Chart area — connect your data or use a library like Recharts."
+        "chartPlaceholder": "Chart area — connect your data or use a library like Recharts.",
+        "analytics": "Analytics"
     },
     "login": {
         "login": {
@@ -59,7 +93,26 @@
                 "notifications": "Notifications"
             },
             "notificationsEmail": "Email notifications",
-            "notificationsEmailDescription": "Receive updates and reminders by email."
+            "notificationsEmailDescription": "Receive updates and reminders by email.",
+            "fileUpload": "File upload (example)",
+            "fileUploadDescription": "Select a file and click Upload. MSW returns success.",
+            "fileSelected": "{{name}} ({{size}} bytes)",
+            "uploadSuccess": "File uploaded",
+            "upload": "Upload",
+            "examples": {
+                "confirmationTitle": "Example: confirmation modal",
+                "confirmationDescription": "ConfirmationWindowTrigger (AlertDialog) — for confirm/cancel actions. ModalWindowTrigger — for forms in a modal (see Create Item on Items page).",
+                "openConfirmation": "Open confirmation",
+                "confirmQuestion": "Are you sure?",
+                "confirmDescription": "This is a demo. Nothing will be deleted.",
+                "cancel": "Cancel",
+                "confirm": "Confirm",
+                "openSheet": "Open side panel",
+                "sheetTitle": "Example: Sheet",
+                "sheetDescription": "Sheet slides in from the side. Use for filters, details, or secondary actions.",
+                "tooltipTrigger": "Hover for tooltip",
+                "tooltipContent": "This is a tooltip. Use for short hints."
+            }
         }
     },
     "validation": {
@@ -87,10 +140,77 @@
         "empty": "No items yet. Create one to get started.",
         "loading": "Loading...",
         "noMatches": "No matches",
+        "countLabel": "{{count}} items",
         "pagination": {
             "previous": "Previous",
             "next": "Next",
             "pageOf": "Page {{current}} of {{total}}"
+        },
+        "detail": {
+            "title": "Item details",
+            "back": "Back to list",
+            "notFound": "Item not found"
+        },
+        "export": "Export CSV",
+        "updatedAgo": "Updated {{seconds}}s ago",
+        "deleteSelected": "Delete selected",
+        "deleteSelectedConfirm": "Selected items will be permanently deleted.",
+        "selectAll": "Select all",
+        "copyId": "Copy ID",
+        "copied": "Copied to clipboard"
+    },
+    "components": {
+        "subtitle": "Reference for reusable components (shared/ui). You can hide this page in production.",
+        "examplesTitle": "Example variants",
+        "examplesDescription": "Button, Badge",
+        "title": {
+            "dialog": "Dialog",
+            "sheet": "Sheet",
+            "alertDialog": "AlertDialog",
+            "form": "Form",
+            "toaster": "Toaster"
+        },
+        "usage": {
+            "button": "Buttons: default, outline, ghost, destructive; sizes sm/default/lg",
+            "card": "Content block: CardHeader, CardTitle, CardDescription, CardContent",
+            "table": "Tables: TableHeader, TableBody, TableRow, TableHead, TableCell",
+            "emptyState": "Empty state: icon, title, optional description and action",
+            "pagination": "Pagination: current page, total, Previous/Next",
+            "dialog": "Center modal: forms, confirmations",
+            "sheet": "Side panel: filters, mobile menu",
+            "alertDialog": "Confirmation Yes/No",
+            "form": "Forms with Zod validation, FormMessage under fields",
+            "inputSelect": "Inputs, Select, Switch, Tabs",
+            "breadcrumbs": "Breadcrumb navigation",
+            "badge": "Status labels (active, draft, archived)",
+            "toaster": "Toast notifications"
+        },
+        "example": {
+            "buttonDefault": "Default",
+            "buttonOutline": "Outline",
+            "buttonGhost": "Ghost",
+            "buttonDestructive": "Destructive",
+            "badgeActive": "Active",
+            "badgeDraft": "Draft",
+            "badgeArchived": "Archived",
+            "inputPlaceholder": "Placeholder text",
+            "tableSample": "Sample table",
+            "emptyStateTitle": "No items",
+            "cardNestedTitle": "Nested Card",
+            "cardNestedDescription": "CardHeader, CardTitle, CardDescription, CardContent",
+            "cardNestedContent": "Any content here.",
+            "dialogExampleTitle": "Demo Dialog",
+            "dialogExampleContent": "This is a center modal. Use for forms or custom content.",
+            "sheetExampleTitle": "Demo Sheet",
+            "sheetExampleContent": "Side panel. Use for filters, mobile menu, or details.",
+            "openAlert": "Open confirmation",
+            "alertExampleQuestion": "Are you sure?",
+            "alertExampleDescription": "This is a demo. Nothing will be deleted.",
+            "alertCancel": "Cancel",
+            "alertConfirm": "Confirm",
+            "showToast": "Show toast",
+            "toastMessage": "Hello from Components page!",
+            "formSeeItems": "See Create Item / Edit Item on the Items page."
         }
     }
 }

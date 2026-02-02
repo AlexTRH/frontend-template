@@ -1,25 +1,20 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LayoutDashboard, List, Settings } from 'lucide-react'
 import { cn } from '@shared/lib/ui/cn'
-import { AppRoutes, RoutePath } from '@shared/config/router'
 
-const navItems = [
-    { to: RoutePath[AppRoutes.DASHBOARD], route: AppRoutes.DASHBOARD, icon: LayoutDashboard },
-    { to: RoutePath[AppRoutes.ITEMS], route: AppRoutes.ITEMS, icon: List },
-    { to: RoutePath[AppRoutes.SETTINGS], route: AppRoutes.SETTINGS, icon: Settings },
-] as const
+import { navItems, devOnlyNavItems } from './nav-items'
 
 export function Sidebar() {
     const { t } = useTranslation()
+    const items = [...navItems, ...(import.meta.env.DEV ? devOnlyNavItems : [])]
 
     return (
-        <aside className="border-border flex w-56 flex-col border-r bg-card">
+        <aside className="border-border hidden w-56 flex-col border-r bg-card md:flex">
             <div className="border-border flex h-14 items-center border-b px-4">
-                <span className="font-semibold">{t('common:common.title')}</span>
+                <span className="font-semibold">{t('common.title')}</span>
             </div>
             <nav className="flex flex-col gap-1 p-3">
-                {navItems.map(({ to, route, icon: Icon }) => (
+                {items.map(({ to, route, icon: Icon }) => (
                     <NavLink
                         key={to}
                         to={to}

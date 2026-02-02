@@ -7,6 +7,7 @@ import { Input } from '@shared/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@shared/ui/form'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@shared/ui/dialog'
 import { Button } from '@shared/ui/button'
+import { setFormErrorsFromApi } from '@shared/lib/set-form-errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ItemStatus } from '@entities/item'
 
@@ -14,6 +15,8 @@ import { getCreateItemSchema, type CreateItemFormValue } from './model'
 import { useCreateItemMutation } from './hooks'
 
 const STATUS_OPTIONS: ItemStatus[] = ['active', 'draft', 'archived']
+
+// Эталон модалки с формой: Dialog + react-hook-form + Zod (getCreateItemSchema с t() для i18n). После успеха — reset, закрыть, инвалидация списка в мутации.
 
 type CreateItemModalProps = {
     trigger: ReactNode
@@ -36,6 +39,9 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
                 form.reset()
                 setOpen(false)
             },
+            onError: (error) => {
+                setFormErrorsFromApi(error, form.setError)
+            },
         })
     })
 
@@ -44,7 +50,7 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t('common:common.createItem')}</DialogTitle>
+                    <DialogTitle>{t('common.createItem')}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={handleSubmit} className="grid gap-4">
@@ -53,9 +59,9 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
                             name="title"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t('common:common.itemTitle')}</FormLabel>
+                                    <FormLabel>{t('common.itemTitle')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Item title" {...field} />
+                                        <Input placeholder={t('common.itemTitle')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -66,17 +72,17 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
                             name="status"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t('items:items.table.status')}</FormLabel>
+                                    <FormLabel>{t('items.table.status')}</FormLabel>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder={t('items:items.status.active')} />
+                                                <SelectValue placeholder={t('items.status.active')} />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                             {STATUS_OPTIONS.map((status) => (
                                                 <SelectItem key={status} value={status}>
-                                                    {t(`items:items.status.${status}`)}
+                                                    {t(`items.status.${status}`)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -86,7 +92,7 @@ export function CreateItemModal({ trigger }: CreateItemModalProps) {
                             )}
                         />
                         <Button type="submit" disabled={mutation.isPending}>
-                            {mutation.isPending ? 'Creating...' : 'Create'}
+                            {mutation.isPending ? t('common.creating') : t('common.create')}
                         </Button>
                     </form>
                 </Form>

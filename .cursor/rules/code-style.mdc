@@ -16,4 +16,6 @@ alwaysApply: false
 
 **Quality**: One responsibility per function; early returns. DRY: extract to shared/utils or components. SOLID where it helps (SRP, DI).
 
+**Performance (React)**: (1) Conditional render: use ternary when the value can be `0` or `NaN` (e.g. `count > 0 ? <Badge /> : null`), not `&&`, to avoid rendering 0. (2) Lazy state init: `useState(() => expensiveInit())` for localStorage/JSON.parse/heavy computation so it runs once. (3) Defer await: move `await` into the branch that needs the result; avoid awaiting before early returns. (4) Heavy libs: prefer direct imports for large packages (e.g. lucide icons from specific path or tree-shaken entry) when bundle size matters; our slice barrel re-exports are fine.
+
 **Tests**: Unit tests for critical logic; mock API (e.g. MSW). Integration for key flows (form → submit → result).

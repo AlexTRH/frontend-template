@@ -21,6 +21,8 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         setupFiles: ['./config/vitest/setup.ts'],
+        include: ['src/**/*.{test,spec}.{ts,tsx}'],
+        exclude: ['e2e/**', 'comet-release/**', 'node_modules/**'],
     },
     preview: { port: 5173 },
 })

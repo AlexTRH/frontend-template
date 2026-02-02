@@ -1,8 +1,7 @@
 import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
+import { STORAGE_KEYS } from '@shared/constants'
 import type { User } from '@entities/user'
-
-const AUTH_STORAGE_KEY = 'auth'
 
 type AuthState = {
     user: User | null
@@ -37,7 +36,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
             setHasHydrated: () => set({ _hasHydrated: true }),
         }),
         {
-            name: AUTH_STORAGE_KEY,
+            name: STORAGE_KEYS.AUTH,
             partialize: (state) => ({ user: state.user, token: state.token }),
             onRehydrateStorage: () => () => {
                 useAuthStore.setState({ _hasHydrated: true })

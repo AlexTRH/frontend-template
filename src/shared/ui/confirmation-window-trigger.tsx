@@ -37,9 +37,13 @@ export function ConfirmationWindowTrigger({
 }: Props & PropsWithChildren) {
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
-            <AlertDialogTrigger asChild hidden={!btnTrigger}>
-                <Button variant="default">{btnTrigger}</Button>
-            </AlertDialogTrigger>
+            {btnTrigger != null ? (
+                <AlertDialogTrigger asChild>
+                    <Button variant="default">{btnTrigger}</Button>
+                </AlertDialogTrigger>
+            ) : children != null ? (
+                <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+            ) : null}
             <AlertDialogContent>
                 <AlertDialogHeader>
                     {question && <AlertDialogTitle>{question}</AlertDialogTitle>}

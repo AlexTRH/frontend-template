@@ -4,6 +4,35 @@
 
 ---
 
+## Карта: задача → пример
+
+| Задача                                          | Где смотреть                                                                                                                    |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Динамический роут (`/items/:id`)                | `pages/item-detail/`, `app/providers/router/ui/AppRouter.tsx`                                                                   |
+| Список с поиском и фильтром                     | `pages/items/ui/page.tsx`                                                                                                       |
+| Сортируемая таблица (клик по заголовку)         | `pages/items/ui/page.tsx` (sortBy, sortOrder, SortHeader)                                                                       |
+| Экспорт в CSV                                   | `pages/items/ui/page.tsx` (handleExportCsv, escapeCsvCell)                                                                      |
+| Polling (refetchInterval)                       | `entities/item/hooks/use-items-query.ts` (options.refetchInterval), Items page «Обновлено N с назад»                            |
+| Copy to clipboard                               | `pages/item-detail/ui/page.tsx` (copyId, navigator.clipboard.writeText + toast)                                                 |
+| Предупреждение при уходе с несохранённой формой | `features/edit-item/EditItemModal.tsx` (formState.isDirty, AlertDialog «Отменить изменения?»)                                   |
+| Загрузка файла (FormData, MSW)                  | `pages/settings/ui/page.tsx` (file input, apiClient.post('/upload', formData)), `mocks/handlers.ts` POST /api/upload            |
+| График (Recharts)                               | `pages/dashboard/ui/page.tsx` (BarChart по статусам items), зависимость `recharts`                                              |
+| Массовое удаление (чекбоксы, Delete selected)   | `pages/items/ui/page.tsx` (selectedIds, useDeleteItemsMutation), `entities/item/api/delete-items.ts`, MSW DELETE /api/items/:id |
+| Форма с валидацией (Zod + i18n)                 | `features/create-item/CreateItemModal.tsx`, `features/auth/model/schema.ts`                                                     |
+| Модалка с формой                                | `features/create-item/CreateItemModal.tsx` (Dialog + Form)                                                                      |
+| Подтверждение (да/нет)                          | `shared/ui/confirmation-window-trigger.tsx`, страница Settings                                                                  |
+| Защищённый роут (auth)                          | `app/providers/router/ui/RequireAuth.tsx`                                                                                       |
+| Запрос списка (useQuery)                        | `entities/item/hooks/use-items-query.ts`, `entities/item/api/fetch-items.ts`                                                    |
+| Мутация (create, login)                         | `features/create-item/hooks/use-create-item-mutation.ts`, `features/auth/hooks/use-login-mutation.ts`                           |
+| Пустое состояние (empty state)                  | `shared/ui/empty-state.tsx`, использование на Items/Dashboard                                                                   |
+| Пагинация                                       | `pages/items/ui/page.tsx` (логика), константы в `shared/constants/pagination.ts`                                                |
+| Переключатель темы/языка                        | `features/theme-toggle/`, `shared/ui/language-switcher.tsx`                                                                     |
+| Layout + sidebar + mobile menu                  | `widgets/layouts/main-layout/`, `nav-items.ts`                                                                                  |
+| Справочник UI-компонентов (dev)                 | `pages/components/`, страница «Компоненты» в сайдбаре                                                                           |
+| Структура FSD и импорты                         | `docs/STRUCTURE.md`                                                                                                             |
+
+---
+
 ## Архитектура (FSD)
 
 - **Слои и папки:** `src/app`, `src/pages`, `src/widgets`, `src/features`, `src/entities`, `src/shared`
@@ -45,10 +74,9 @@
 
 ## Константы
 
-- **Централизованные константы (как в comet-release):** `src/shared/constants/` — `pagination.ts` (DEFAULT_PAGINATION_OFFSET, DEFAULT_PAGINATION_LIMIT), `query-key.ts` (QUERY_KEYS для TanStack Query), `form.ts` (NO_DATA_VALUE), `validation.ts` (VALIDATION), реэкспорт из `index.ts`
-- **Разрозненные примеры:** `AUTH_STORAGE_KEY` в `src/shared/store/auth.ts`, `ITEMS_QUERY_KEY` в `src/entities/item/api/fetch-items.ts` (использует QUERY_KEYS), `HYDRATE_TIMEOUT_MS` в `RequireAuth.tsx`, `LOCALES` в `src/shared/ui/language-switcher.tsx`
+- **Централизованные константы (как в comet-release):** `src/shared/constants/` — `pagination.ts` (DEFAULT_PAGINATION_OFFSET, DEFAULT_PAGINATION_LIMIT), `query-key.ts` (QUERY_KEYS), `form.ts` (NO_DATA_VALUE), `validation.ts` (VALIDATION), `storage.ts` (STORAGE_KEYS: AUTH, THEME), реэкспорт из `index.ts`. Auth store использует `STORAGE_KEYS.AUTH` из `@shared/constants`.
+- **Разрозненные примеры:** `ITEMS_QUERY_KEY` в `src/entities/item/api/fetch-items.ts` (использует QUERY_KEYS), `HYDRATE_TIMEOUT_MS` в `RequireAuth.tsx`, `LOCALES` в `src/shared/ui/language-switcher.tsx`
 - **Маршруты:** `RoutePath`, `AppRoutes` в `src/shared/config/router/routePath.ts`
-- Дополнительно: `src/shared/config/constants.ts` (STORAGE_KEYS, DEFAULT_PAGE_SIZE и т.п.)
 
 ---
 
@@ -62,7 +90,7 @@
 
 ## Компоненты (UI)
 
-- **shared/ui:** `button` (и `buttonVariants`), `input`, `label`, `form` (FormField, FormMessage и т.д.), `dialog` (включая DialogClose), `card`, `table`, `breadcrumbs`, `dropdown-menu`, `page-loader`, `skeleton`, `table-skeleton`, `card-skeleton`, `errors/error`, `sonner` (Toaster), `language-switcher`, `spinner`
+- **shared/ui:** `button` (и `buttonVariants`), `input`, `label`, `form` (FormField, FormMessage и т.д.), `dialog` (включая DialogClose), `card`, `table`, `breadcrumbs`, `dropdown-menu`, `page-loader`, `skeleton`, `table-skeleton`, `card-skeleton`, `errors/error`, `empty-state` (иконка + заголовок + опционально описание и кнопка), `sonner` (Toaster), `language-switcher`, `spinner`
 - **Модалки (несколько вариантов, как в comet-release):**
     - **Dialog** — базовая модалка Radix: `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogTrigger`, `DialogClose`. Пример: `features/create-item/CreateItemModal.tsx` (форма создания через Dialog + Trigger).
     - **ModalWindowTrigger** — готовая обёртка с кнопкой, заголовком, описанием, Cancel/Submit: `@shared/ui/modal`. Удобно для форм в модалке (scrollable, formId, isPending). Пример использования — см. reference comet-release: `CreateRequestModal`, `CreatePositionModal`.
@@ -79,7 +107,8 @@
 ## Страницы (pages)
 
 - **Dashboard:** `src/pages/dashboard/` — приветствие, стат-карточки, таблица недавних, плейсхолдер графика
-- **Items:** `src/pages/items/` — таблица, поиск, фильтр по статусу, пагинация, создание элемента
+- **Items:** `src/pages/items/` — таблица, поиск, фильтр по статусу, пагинация, создание элемента, ссылки на деталь
+- **Item detail:** `src/pages/item-detail/` — динамический роут `/items/:id`, useParams, одна сущность, EmptyState при «не найден»
 - **Settings:** `src/pages/settings/` — заголовок, карточка «General», «Coming soon», пример **ConfirmationWindowTrigger** (кнопка «Open confirmation»)
 - **Login:** `src/pages/login/` — форма входа, демо-вход
 - **Not found:** `src/pages/not-found/`
@@ -112,6 +141,13 @@
 
 ---
 
+## Тесты
+
+- **Unit:** Vitest + Testing Library; скрипт `test:unit`. Примеры: `src/features/create-item/model/schema.test.ts` (схема создания айтема), `src/features/auth/model/schema.test.ts` (схема логина). Setup: `config/vitest/setup.ts`.
+- **E2E:** Playwright; скрипт `test:e2e`. Сценарии в `e2e/demo.spec.ts`: демо-логин, переход на Items/Settings, выход. Конфиг: `playwright.config.ts` (запуск dev-сервера при прогоне).
+
+---
+
 ## Картинки
 
 - **В шаблоне:** статика в `public/` — `favicon.svg` (подключён в `index.html`), `logo-small.svg`, `google-icon.svg` (примеры из reference comet-release; можно использовать в логотипе или кнопке «Войти через Google»).
@@ -124,3 +160,16 @@
 - **Библиотека:** `lucide-react`
 - **Примеры:** сайдбар (LayoutDashboard, List, Settings), header/user-menu (User, ChevronDown, LogOut, Settings), страница Settings (Settings), кнопки и формы по проекту
 - **Доступность:** декоративные иконки с `aria-hidden`
+
+---
+
+## Типичные ошибки
+
+| Ошибка                                                                 | Как избежать                                                                                                                  |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Импорт слоя «вверх»** (например, `shared` импортирует из `features`) | Соблюдать FSD: слой импортирует только из слоёв ниже. См. `docs/STRUCTURE.md`.                                                |
+| **Дублирование логики в page** (запросы, фильтры прямо в page.tsx)     | Выносить в entity/feature: `useItemsQuery`, `useCreateItemMutation`, константы в `shared/constants`. Page только собирает UI. |
+| **Хардкод строк в UI**                                                 | Все пользовательские строки — в i18n (`t('section.key')`), в т.ч. placeholder, aria-label, сообщения об ошибках.              |
+| **Редирект на логин до гидрации**                                      | В `RequireAuth` не редиректить, пока `_hasHydrated === false` (Zustand persist восстанавливает user асинхронно).              |
+| **Пустой список без empty state**                                      | Использовать `EmptyState` (иконка + заголовок), не просто текст.                                                              |
+| **Форма без маппинга ошибок API**                                      | При 422/400 маппить ответ бэкенда в `form.setError` через хелпер (типизированные ошибки API).                                 |

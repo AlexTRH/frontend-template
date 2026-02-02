@@ -19,7 +19,7 @@
 
 ## Reference-проект
 
-Папка `comet-release` — эталон по **архитектуре (FSD)** и **компонентам (дизайн)**. Стек в шаблоне универсальный (Zod, axios и т.д.); компоненты и структура слайсов берутся за образец, чтобы новые проекты имели ту же «жизайн-систему» и структуру.
+Папка `comet-release` — эталон по **архитектуре (FSD)** и **компонентам (дизайн)**. Стек в шаблоне универсальный (Zod, axios и т.д.); компоненты и структура слайсов берутся за образец, чтобы новые проекты имели ту же «жизайн-систему» и структуру. При обычной разработке папку не меняй; при необходимости добавь `comet-release` в `.cursorignore`, чтобы не тянуть её в контекст AI.
 
 ## Как пользоваться
 
@@ -35,14 +35,16 @@ npm run dev   # или  yarn dev
 - нажать **«Демо-вход»** — сразу попадёшь в приложение и сможешь посмотреть дашборд, список Items, создать элемент, переключить тему и язык;
 - или ввести любой email и пароль (от 6 символов) и нажать «Войти» — моки позволят войти без бэкенда (если в `.env` указано `VITE_USE_MSW=true`).
 
-После входа доступны: Dashboard, страница Items (поиск, фильтр, пагинация, создание), переключатель темы и языка в header, выход через меню профиля.
+После входа доступны: Dashboard, страница Items (поиск, фильтр, пагинация, создание), переключатель темы и языка в header, выход через меню профиля. В dev в сайдбаре также показывается страница **«Компоненты»** — справочник по UI-компонентам (в продакшене её можно скрыть).
 
-Остальные скрипты те же: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit`. Используй один менеджер пакетов: после клона выполни только `npm install` **или** только `yarn` — в репо должен быть один lock-файл (`package-lock.json` или `yarn.lock`).
+Остальные скрипты: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit` (Vitest), `test:e2e` (Playwright; при прогоне сам поднимает dev-сервер). Используй один менеджер пакетов: после клона выполни только `npm install` **или** только `yarn` — в репо должен быть один lock-файл (`package-lock.json` или `yarn.lock`).
 
 1. Правила для AI — `cursor-rules-portable.md` и `.cursor/rules/`
-2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки, хуки).
-3. **Какой компонент когда использовать** — в `docs/WHICH-COMPONENT-WHEN.md`: формы, кнопки, модалки, таблицы, хуки и т.д.
-4. Примеры: страницы `pages/dashboard`, `pages/items`, `pages/settings`, `pages/login`, сущность `entities/item`, фичи `features/create-item`, `features/auth`, `features/theme-toggle` (форма с Zod, модалка, вызов API).
+2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки, хуки) и карта «задача → пример».
+3. **Эталон структуры (FSD)** — в `docs/STRUCTURE.md`: дерево слоёв, правила импортов, где что класть.
+4. **Какой компонент когда использовать** — в `docs/WHICH-COMPONENT-WHEN.md`: формы, кнопки, модалки, таблицы, хуки и т.д.
+5. **Паттерны UI** — в `docs/UI-PATTERNS.md`: Empty/Loading/Error, когда Dialog/Sheet/AlertDialog, Create vs Edit.
+6. Примеры: страницы `pages/dashboard`, `pages/items`, `pages/settings`, `pages/login`, сущность `entities/item`, фичи `features/create-item`, `features/auth`, `features/theme-toggle` (форма с Zod, модалка, вызов API).
 
 ## Что уже есть в костяке
 
@@ -51,7 +53,7 @@ npm run dev   # или  yarn dev
 - **widgets/layouts/main-layout**: сайдбар (Dashboard, Items, Settings), header (тема + язык + user menu), `<Outlet />`
 - **entities/item**, **entities/user**: типы, API, хуки (например `useItemsQuery`)
 - **features/create-item**, **features/auth**, **features/theme-toggle**: модалка создания, логин/демо-вход, переключатель темы; валидация форм через Zod с переводами (`getLoginSchema(t)`, `getCreateItemSchema(t)`)
-- **pages**: **Dashboard**, **Items** (таблица, поиск, фильтр, пагинация), **Settings**, **Login** (форма + демо-вход), not-found
+- **pages**: **Dashboard**, **Items** (таблица, поиск, фильтр, пагинация, ссылки на деталь), **Item detail** (`/items/:id`), **Settings**, **Login** (форма + демо-вход), not-found
 - **shared**: api/client (interceptors: token, 401/403/5xx + toast), store/auth (Zustand + persist), config/constants (пример констант), config/i18n (en/ru), UI-компоненты
 - **i18n**: тексты в `common`, `dashboard`, `items`, `login`, `settings`, `validation` (en + ru)
 - **MSW**: при `VITE_USE_MSW=true` — список items, создание, логин без бэкенда
@@ -77,6 +79,13 @@ npm run dev   # или  yarn dev
 - **Не пускает после логина / редирект на логин** — включи `VITE_USE_MSW=true` в `.env` или используй кнопку «Демо-вход» на странице логина.
 - **Запросы не идут / 404 на API** — при включённом MSW в dev `baseURL` принудительно `/api`; при выключенном MSW задай `VITE_API_URL` на твой бэкенд.
 
+## Деплой
+
+- **Docker:** в корне есть `Dockerfile` (multi-stage: node для сборки, nginx для раздачи статики) и `nginx.conf`. Сборка: `docker build -t frontend-template .` (при сборке можно передать `--build-arg VITE_API_URL=...`). В production обязательно задай `VITE_API_URL` при сборке или настрой прокси в nginx.
+- **Vercel:** в корне есть `vercel.json` (framework: vite, SPA rewrites). Подключи репозиторий к Vercel, в настройках проекта задай переменную окружения `VITE_API_URL` для production.
+
+См. `Dockerfile`, `nginx.conf`, `vercel.json`.
+
 ## Доступность (a11y)
 
-В шаблоне: семантичная разметка, `aria-hidden` у декоративных иконок, фокус на интерактиве. При добавлении своих страниц и форм используй осмысленные `label`, не убирай outline без замены на видимый focus-стиль.
+В шаблоне: семантичная разметка, skip link («Перейти к основному контенту») в layout для навигации с клавиатуры, `aria-hidden` у декоративных иконок, фокус на интерактиве. При добавлении своих страниц и форм используй осмысленные `label`, не убирай outline без замены на видимый focus-стиль.

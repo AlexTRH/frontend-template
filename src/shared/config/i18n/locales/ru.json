@@ -1,15 +1,48 @@
 {
     "common": {
         "title": "Шаблон фронтенда",
+        "pageTitle": {
+            "dashboard": "Дашборд",
+            "items": "Элементы",
+            "itemDetail": "Детали элемента",
+            "settings": "Настройки",
+            "login": "Вход",
+            "components": "Компоненты",
+            "notFound": "Страница не найдена"
+        },
+        "footer": "Шаблон фронтенда",
+        "close": "Закрыть",
+        "reload": "Обновить",
+        "user": "Пользователь",
+        "errorTitle": "Что-то пошло не так",
+        "errorDescription": "Попробуйте обновить страницу.",
+        "aria": {
+            "close": "Закрыть",
+            "language": "Язык",
+            "theme": "Тема",
+            "breadcrumb": "Навигация",
+            "skipToContent": "Перейти к основному контенту",
+            "menu": "Открыть меню",
+            "mainNav": "Основная навигация"
+        },
         "nav": {
             "dashboard": "Дашборд",
             "items": "Элементы",
-            "settings": "Настройки"
+            "settings": "Настройки",
+            "components": "Компоненты"
         },
         "home": "Главная",
         "notFound": "Страница не найдена",
         "createItem": "Создать элемент",
+        "create": "Создать",
+        "creating": "Создаём...",
+        "editItem": "Редактировать элемент",
+        "edit": "Сохранить",
+        "saving": "Сохраняем...",
         "itemTitle": "Название",
+        "discardChanges": "Отменить несохранённые изменения?",
+        "discard": "Отменить",
+        "login": "Войти",
         "goHome": "На главную",
         "breadcrumbs": {
             "dashboard": "Дашборд",
@@ -29,7 +62,8 @@
         "draftItems": "Черновики",
         "recentItems": "Недавние элементы",
         "viewAll": "Смотреть все",
-        "chartPlaceholder": "Область графика — подключите данные или библиотеку вроде Recharts."
+        "chartPlaceholder": "Область графика — подключите данные или библиотеку вроде Recharts.",
+        "analytics": "Аналитика"
     },
     "login": {
         "login": {
@@ -59,7 +93,26 @@
                 "notifications": "Уведомления"
             },
             "notificationsEmail": "Email-уведомления",
-            "notificationsEmailDescription": "Получать обновления и напоминания по email."
+            "notificationsEmailDescription": "Получать обновления и напоминания по email.",
+            "fileUpload": "Загрузка файла (пример)",
+            "fileUploadDescription": "Выберите файл и нажмите «Загрузить». MSW возвращает успех.",
+            "fileSelected": "{{name}} ({{size}} байт)",
+            "uploadSuccess": "Файл загружен",
+            "upload": "Загрузить",
+            "examples": {
+                "confirmationTitle": "Пример: модалка подтверждения",
+                "confirmationDescription": "ConfirmationWindowTrigger (AlertDialog) — для действий «Да/Нет». ModalWindowTrigger — для форм в модалке (см. Создать элемент на странице Items).",
+                "openConfirmation": "Открыть подтверждение",
+                "confirmQuestion": "Вы уверены?",
+                "confirmDescription": "Это демо. Ничего не будет удалено.",
+                "cancel": "Отмена",
+                "confirm": "Подтвердить",
+                "openSheet": "Открыть боковую панель",
+                "sheetTitle": "Пример: Sheet",
+                "sheetDescription": "Sheet выезжает сбоку. Используйте для фильтров, деталей или дополнительных действий.",
+                "tooltipTrigger": "Наведите для подсказки",
+                "tooltipContent": "Это подсказка. Используйте для коротких подсказок."
+            }
         }
     },
     "validation": {
@@ -87,10 +140,77 @@
         "empty": "Элементов пока нет. Создайте первый.",
         "loading": "Загрузка...",
         "noMatches": "Ничего не найдено",
+        "countLabel": "{{count}} элементов",
         "pagination": {
             "previous": "Назад",
             "next": "Вперёд",
             "pageOf": "Стр. {{current}} из {{total}}"
+        },
+        "detail": {
+            "title": "Детали элемента",
+            "back": "К списку",
+            "notFound": "Элемент не найден"
+        },
+        "export": "Экспорт CSV",
+        "updatedAgo": "Обновлено {{seconds}} с назад",
+        "deleteSelected": "Удалить выбранные",
+        "deleteSelectedConfirm": "Выбранные элементы будут удалены безвозвратно.",
+        "selectAll": "Выбрать все",
+        "copyId": "Копировать ID",
+        "copied": "Скопировано"
+    },
+    "components": {
+        "subtitle": "Справочник по переиспользуемым компонентам (shared/ui). В продакшене эту страницу можно скрыть.",
+        "examplesTitle": "Примеры вариантов",
+        "examplesDescription": "Button, Badge",
+        "title": {
+            "dialog": "Dialog",
+            "sheet": "Sheet",
+            "alertDialog": "AlertDialog",
+            "form": "Form",
+            "toaster": "Toaster"
+        },
+        "usage": {
+            "button": "Кнопки: default, outline, ghost, destructive; размеры sm/default/lg",
+            "card": "Блок контента: CardHeader, CardTitle, CardDescription, CardContent",
+            "table": "Таблицы: TableHeader, TableBody, TableRow, TableHead, TableCell",
+            "emptyState": "Пустое состояние: иконка, заголовок, опционально описание и кнопка",
+            "pagination": "Пагинация: текущая страница, всего, Назад/Вперёд",
+            "dialog": "Модалка по центру: формы, подтверждения",
+            "sheet": "Боковая панель: фильтры, меню на мобиле",
+            "alertDialog": "Подтверждение Да/Нет",
+            "form": "Формы с валидацией Zod, FormMessage под полями",
+            "inputSelect": "Поля ввода, Select, Switch, Tabs",
+            "breadcrumbs": "Хлебные крошки навигации",
+            "badge": "Метки статуса (active, draft, archived)",
+            "toaster": "Toast-уведомления"
+        },
+        "example": {
+            "buttonDefault": "Default",
+            "buttonOutline": "Outline",
+            "buttonGhost": "Ghost",
+            "buttonDestructive": "Destructive",
+            "badgeActive": "Активный",
+            "badgeDraft": "Черновик",
+            "badgeArchived": "В архиве",
+            "inputPlaceholder": "Подсказка",
+            "tableSample": "Пример таблицы",
+            "emptyStateTitle": "Нет элементов",
+            "cardNestedTitle": "Вложенная карточка",
+            "cardNestedDescription": "CardHeader, CardTitle, CardDescription, CardContent",
+            "cardNestedContent": "Любой контент здесь.",
+            "dialogExampleTitle": "Демо Dialog",
+            "dialogExampleContent": "Модалка по центру. Для форм или своего контента.",
+            "sheetExampleTitle": "Демо Sheet",
+            "sheetExampleContent": "Боковая панель. Для фильтров, мобильного меню или деталей.",
+            "openAlert": "Открыть подтверждение",
+            "alertExampleQuestion": "Вы уверены?",
+            "alertExampleDescription": "Это демо. Ничего не будет удалено.",
+            "alertCancel": "Отмена",
+            "alertConfirm": "Подтвердить",
+            "showToast": "Показать toast",
+            "toastMessage": "Привет со страницы Компоненты!",
+            "formSeeItems": "См. Создать элемент / Редактировать на странице Элементы."
         }
     }
 }

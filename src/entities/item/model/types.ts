@@ -6,3 +6,6 @@ export type Item = {
     status: ItemStatus
     createdAt: string
 }
+
+/** Payload for create/update item (title + status). */
+export type ItemPayload = Pick<Item, 'title' | 'status'>

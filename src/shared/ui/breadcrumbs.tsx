@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@shared/lib/ui/cn'
 
@@ -13,10 +14,11 @@ type BreadcrumbsProps = {
 }
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+    const { t } = useTranslation()
     if (items.length === 0) return null
 
     return (
-        <nav aria-label="Breadcrumb" className={cn('flex items-center gap-1 text-sm', className)}>
+        <nav aria-label={t('common.aria.breadcrumb')} className={cn('flex items-center gap-1 text-sm', className)}>
             {items.map((item, i) => {
                 const isLast = i === items.length - 1
                 return (

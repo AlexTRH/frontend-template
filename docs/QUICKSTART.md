@@ -29,7 +29,7 @@
     - импортировать `ProductsPage`;
     - добавить в `routeConfig`: `[AppRoutes.PRODUCTS]: { path: RoutePath[AppRoutes.PRODUCTS], element: <ProductsPage />, layout: RouteLayout.DEFAULT }`.
 
-4. **Сайдбар** — в `src/widgets/layouts/main-layout/ui/sidebar.tsx`:
+4. **Сайдбар** — в `src/widgets/layouts/main-layout/ui/nav-items.ts`:
     - добавить пункт в массив `navItems` с `to`, `route`, `icon`.
 
 5. **i18n** — в `src/shared/config/i18n/locales/en.json` и `ru.json`:
