@@ -53,7 +53,13 @@
             "subtitle": "Управление настройками приложения и аккаунта.",
             "general": "Общие",
             "generalDescription": "Тема, язык и другие опции.",
-            "comingSoon": "Дополнительные опции скоро. Добавьте сюда свою форму настроек."
+            "comingSoon": "Дополнительные опции скоро. Добавьте сюда свою форму настроек.",
+            "tabs": {
+                "general": "Общие",
+                "notifications": "Уведомления"
+            },
+            "notificationsEmail": "Email-уведомления",
+            "notificationsEmailDescription": "Получать обновления и напоминания по email."
         }
     },
     "validation": {

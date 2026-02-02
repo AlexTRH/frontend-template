@@ -40,8 +40,9 @@ npm run dev   # или  yarn dev
 Остальные скрипты те же: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit`. Используй один менеджер пакетов: после клона выполни только `npm install` **или** только `yarn` — в репо должен быть один lock-файл (`package-lock.json` или `yarn.lock`).
 
 1. Правила для AI — `cursor-rules-portable.md` и `.cursor/rules/`
-2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки).
-3. Примеры: страницы `pages/dashboard`, `pages/items`, `pages/settings`, `pages/login`, сущность `entities/item`, фичи `features/create-item`, `features/auth`, `features/theme-toggle` (форма с Zod, модалка, вызов API).
+2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки, хуки).
+3. **Какой компонент когда использовать** — в `docs/WHICH-COMPONENT-WHEN.md`: формы, кнопки, модалки, таблицы, хуки и т.д.
+4. Примеры: страницы `pages/dashboard`, `pages/items`, `pages/settings`, `pages/login`, сущность `entities/item`, фичи `features/create-item`, `features/auth`, `features/theme-toggle` (форма с Zod, модалка, вызов API).
 
 ## Что уже есть в костяке
 
