@@ -50,7 +50,7 @@
 - **PostCSS / Tailwind:** `postcss.config.mjs`, стили в `src/app/styles/index.css`
 - **Vitest:** `config/vitest/setup.ts`, скрипт `test:unit`
 - **Playwright:** `playwright.config.ts`, скрипт `test:e2e`
-- **shadcn/ui:** `components.json` — алиасы и путь к стилям (ориентация на reference-проект comet-release)
+- **shadcn/ui:** `components.json` — алиасы и путь к стилям
 
 ---
 
@@ -74,7 +74,7 @@
 
 ## Константы
 
-- **Централизованные константы (как в comet-release):** `src/shared/constants/` — `pagination.ts` (DEFAULT_PAGINATION_OFFSET, DEFAULT_PAGINATION_LIMIT), `query-key.ts` (QUERY_KEYS), `form.ts` (NO_DATA_VALUE), `validation.ts` (VALIDATION), `storage.ts` (STORAGE_KEYS: AUTH, THEME), реэкспорт из `index.ts`. Auth store использует `STORAGE_KEYS.AUTH` из `@shared/constants`.
+- **Централизованные константы:** `src/shared/constants/` — `pagination.ts` (DEFAULT_PAGINATION_OFFSET, DEFAULT_PAGINATION_LIMIT), `query-key.ts` (QUERY_KEYS), `form.ts` (NO_DATA_VALUE), `validation.ts` (VALIDATION), `storage.ts` (STORAGE_KEYS: AUTH, THEME), реэкспорт из `index.ts`. Auth store использует `STORAGE_KEYS.AUTH` из `@shared/constants`.
 - **Разрозненные примеры:** `ITEMS_QUERY_KEY` в `src/entities/item/api/fetch-items.ts` (использует QUERY_KEYS), `HYDRATE_TIMEOUT_MS` в `RequireAuth.tsx`, `LOCALES` в `src/shared/ui/language-switcher.tsx`
 - **Маршруты:** `RoutePath`, `AppRoutes` в `src/shared/config/router/routePath.ts`
 
@@ -91,9 +91,9 @@
 ## Компоненты (UI)
 
 - **shared/ui:** `button` (и `buttonVariants`), `input`, `label`, `form` (FormField, FormMessage и т.д.), `dialog` (включая DialogClose), `card`, `table`, `breadcrumbs`, `dropdown-menu`, `page-loader`, `skeleton`, `table-skeleton`, `card-skeleton`, `errors/error`, `empty-state` (иконка + заголовок + опционально описание и кнопка), `sonner` (Toaster), `language-switcher`, `spinner`
-- **Модалки (несколько вариантов, как в comet-release):**
+- **Модалки (несколько вариантов):**
     - **Dialog** — базовая модалка Radix: `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogTrigger`, `DialogClose`. Пример: `features/create-item/CreateItemModal.tsx` (форма создания через Dialog + Trigger).
-    - **ModalWindowTrigger** — готовая обёртка с кнопкой, заголовком, описанием, Cancel/Submit: `@shared/ui/modal`. Удобно для форм в модалке (scrollable, formId, isPending). Пример использования — см. reference comet-release: `CreateRequestModal`, `CreatePositionModal`.
+    - **ModalWindowTrigger** — готовая обёртка с кнопкой, заголовком, описанием, Cancel/Submit: `@shared/ui/modal`. Удобно для форм в модалке (scrollable, formId, isPending).
     - **AlertDialog** — `@shared/ui/alert-dialog` для подтверждений (да/нет без закрытия по клику снаружи).
     - **ConfirmationWindowTrigger** — обёртка над AlertDialog с кнопкой, вопросом, Cancel/Confirm. Пример: страница Settings (кнопка «Open confirmation»).
 - **Формы и ввод:** `Input`, `Textarea` (`@shared/ui/textarea`), `Select` + `SelectTrigger`/`SelectContent`/`SelectItem` (`@shared/ui/select`), `Switch` (`@shared/ui/switch`). Пример Select — Create Item (поле статуса); Switch — Settings (уведомления).
@@ -150,7 +150,7 @@
 
 ## Картинки
 
-- **В шаблоне:** статика в `public/` — `favicon.svg` (подключён в `index.html`), `logo-small.svg`, `google-icon.svg` (примеры из reference comet-release; можно использовать в логотипе или кнопке «Войти через Google»).
+- **В шаблоне:** статика в `public/` — `favicon.svg` (подключён в `index.html`), `logo-small.svg`, `google-icon.svg` (можно использовать в логотипе или кнопке «Войти через Google»).
 - **Практика:** статику класть в `public/` и ссылаться по корню (например `/favicon.svg`, `/logo-small.svg`); для импорта из `src` в Vite — `import img from './image.png'` и использовать `img` как URL.
 
 ---

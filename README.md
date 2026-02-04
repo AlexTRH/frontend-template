@@ -8,7 +8,7 @@
 - **Конфиги** — Vite, TypeScript, ESLint, Prettier, path aliases
 - **Примеры API** — axios-клиент, типизированные запросы, interceptors (auth и т.д.)
 - **i18n** — подключённый и с примерами строк
-- **UI** — единая дизайн-система: модалки, кнопки, формы, таблицы и т.д. (компоненты за основу из reference-проекта `comet-release`, чтобы внутренние проекты выглядели одинаково)
+- **UI** — единая дизайн-система: модалки, кнопки, формы, таблицы и т.д., чтобы внутренние проекты выглядели одинаково
 - **Примеры для новичков** — пример страницы, сущности, фичи, формы, вызова API, чтобы можно было копировать и менять под задачу
 
 ## Для кого
@@ -16,10 +16,6 @@
 - Стажёры и джуны — готовый скелет, не нужно с нуля собирать проект
 - Бэкендеры — привычный подход (слои, типы, API-слой), можно быстро ориентироваться
 - Внутренние проекты — одна база по архитектуре и дизайну, проще объединять и поддерживать
-
-## Reference-проект
-
-Папка `comet-release` — эталон по **архитектуре (FSD)** и **компонентам (дизайн)**. Стек в шаблоне универсальный (Zod, axios и т.д.); компоненты и структура слайсов берутся за образец, чтобы новые проекты имели ту же «жизайн-систему» и структуру. При обычной разработке папку не меняй; при необходимости добавь `comet-release` в `.cursorignore`, чтобы не тянуть её в контекст AI.
 
 ## Как пользоваться
 
@@ -37,7 +33,7 @@ npm run dev   # или  yarn dev
 
 После входа доступны: Dashboard, страница Items (поиск, фильтр, пагинация, создание), переключатель темы и языка в header, выход через меню профиля. В dev в сайдбаре также показывается страница **«Компоненты»** — справочник по UI-компонентам (в продакшене её можно скрыть).
 
-Остальные скрипты: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit` (Vitest), `test:e2e` (Playwright; при прогоне сам поднимает dev-сервер). Используй один менеджер пакетов: после клона выполни только `npm install` **или** только `yarn` — в репо должен быть один lock-файл (`package-lock.json` или `yarn.lock`).
+Остальные скрипты: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit` (Vitest), `test:e2e` (Playwright; при прогоне сам поднимает dev-сервер). В репозитории один lock-файл — `package-lock.json` (npm). После клона выполни `npm install`; при желании можно использовать yarn (`yarn` создаст `yarn.lock` в своём проекте).
 
 1. Правила для AI — `cursor-rules-portable.md` и `.cursor/rules/`
 2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки, хуки) и карта «задача → пример».
@@ -81,10 +77,47 @@ npm run dev   # или  yarn dev
 
 ## Деплой
 
-- **Docker:** в корне есть `Dockerfile` (multi-stage: node для сборки, nginx для раздачи статики) и `nginx.conf`. Сборка: `docker build -t frontend-template .` (при сборке можно передать `--build-arg VITE_API_URL=...`). В production обязательно задай `VITE_API_URL` при сборке или настрой прокси в nginx.
-- **Vercel:** в корне есть `vercel.json` (framework: vite, SPA rewrites). Подключи репозиторий к Vercel, в настройках проекта задай переменную окружения `VITE_API_URL` для production.
+В шаблоне два варианта: **Vercel** (облако) и **Docker** (свой сервер или любой хостинг с контейнерами).
 
-См. `Dockerfile`, `nginx.conf`, `vercel.json`.
+### Вариант 1: Vercel
+
+Файл `vercel.json` задаёт сборку Vite и SPA-правила (все пути → `index.html`).
+
+1. Подключи репозиторий к [Vercel](https://vercel.com) (Import Project).
+2. Vercel сам подхватит Vite по `package.json`; параметры из `vercel.json`: `buildCommand`, `outputDirectory: "dist"`, rewrites для SPA.
+3. В настройках проекта → **Environment Variables** добавь переменную для production:
+    - `VITE_API_URL` — URL бэкенда (например `https://api.example.com`).
+4. Деплой по push в основную ветку или по кнопке Deploy.
+
+Переменные задаются в панели Vercel; при сборке они подставляются в код как `import.meta.env.VITE_API_URL`.
+
+### Вариант 2: Docker (nginx)
+
+Файлы `Dockerfile` и `nginx.conf` — сборка приложения в образе и раздача статики через Nginx (свой сервер, Kubernetes, любой хостинг с Docker).
+
+1. **Сборка образа** (в корне проекта):
+
+    ```bash
+    docker build -t frontend-template .
+    ```
+
+    Чтобы задать URL API на этапе сборки:
+
+    ```bash
+    docker build --build-arg VITE_API_URL=https://api.example.com -t frontend-template .
+    ```
+
+2. **Запуск контейнера**:
+
+    ```bash
+    docker run -p 8080:80 frontend-template
+    ```
+
+    Приложение будет доступно на `http://localhost:8080`.
+
+3. **Production:** если не передавали `VITE_API_URL` при сборке, нужно либо пересобрать с `--build-arg`, либо настроить прокси в `nginx.conf` (доп. `location /api` с `proxy_pass` на бэкенд) и пересобрать образ.
+
+Схема образа: стадия **builder** (Node) — `npm ci` и `npm run build`; стадия **production** (Alpine + Nginx) — копирование `dist` и конфига Nginx. Nginx отдаёт файлы из `/usr/share/nginx/html` и для любого пути без файла отдаёт `index.html` (SPA).
 
 ## Доступность (a11y)
 

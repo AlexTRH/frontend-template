@@ -22,7 +22,7 @@ export default defineConfig({
         globals: true,
         setupFiles: ['./config/vitest/setup.ts'],
         include: ['src/**/*.{test,spec}.{ts,tsx}'],
-        exclude: ['e2e/**', 'comet-release/**', 'node_modules/**'],
+        exclude: ['e2e/**', 'node_modules/**'],
     },
     preview: { port: 5173 },
 })

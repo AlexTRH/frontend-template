@@ -6,3 +6,11 @@ dist
 .env.*
 !.env.example
 
+# Cursor IDE
+.cursor/
+
+# Generated / temporary
+playwright-report/
+test-results/
+*.log
+yarn-error.log

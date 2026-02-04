@@ -8,7 +8,7 @@ import prettier from 'eslint-plugin-prettier/recommended'
 import * as importPlugin from 'eslint-plugin-import'
 
 export default tseslint.config(
-    { ignores: ['dist', 'config', 'comet-release', 'public', '**/*.config.{js,ts,mjs}'] },
+    { ignores: ['dist', 'config', 'public', '**/*.config.{js,ts,mjs}'] },
     {
         files: ['**/*.{js,ts,tsx}'],
         settings: { react: { version: '19.0.0' } },
@@ -34,10 +34,7 @@ export default tseslint.config(
             ...react.configs['jsx-runtime'].rules,
             'import/extensions': 'off',
             'react/prop-types': 'off',
-            '@typescript-eslint/no-misused-promises': [
-                2,
-                { checksVoidReturn: { attributes: false } },
-            ],
+            '@typescript-eslint/no-misused-promises': [2, { checksVoidReturn: { attributes: false } }],
             '@typescript-eslint/consistent-type-imports': 'error',
             'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
             'import/order': [

@@ -110,6 +110,4 @@ src/
 - **Локали:** ключи в `shared/config/i18n/locales`; в коде — `t('section.key')`.
 - **Тесты:** unit рядом с кодом (`*.test.ts`) или в `__tests__`; e2e в `e2e/`.
 
-**Reference-проект:** папка `comet-release` в корне — эталон по FSD и дизайн-системе. При обычной разработке её не меняй; при необходимости добавь `comet-release/` в `.cursorignore`, чтобы не тянуть её в контекст AI.
-
 См. также: `docs/EXAMPLES-IN-TEMPLATE.md` (где искать примеры), `docs/WHICH-COMPONENT-WHEN.md` (какой UI-компонент когда использовать).
