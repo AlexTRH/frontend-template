@@ -78,49 +78,20 @@ npm run dev   # или  yarn dev
 - **Не пускает после логина / редирект на логин** — включи `VITE_USE_MSW=true` в `.env` или используй кнопку «Демо-вход» на странице логина.
 - **Запросы не идут / 404 на API** — при включённом MSW в dev `baseURL` принудительно `/api`; при выключенном MSW задай `VITE_API_URL` на твой бэкенд.
 
-## Деплой
+## Деплой (Docker)
 
-В шаблоне два варианта: **Vercel** (облако) и **Docker** (свой сервер или любой хостинг с контейнерами).
+В корне есть `Dockerfile` и `nginx.conf`: сборка приложения в образе, раздача статики через Nginx (свой сервер, Kubernetes, любой хостинг с Docker).
 
-### Вариант 1: Vercel
+```bash
+# Сборка (опционально: URL API на этапе сборки)
+docker build -t frontend-template .
+# docker build --build-arg VITE_API_URL=https://api.example.com -t frontend-template .
 
-Файл `vercel.json` задаёт сборку Vite и SPA-правила (все пути → `index.html`).
+# Запуск
+docker run -p 8080:80 frontend-template
+```
 
-1. Подключи репозиторий к [Vercel](https://vercel.com) (Import Project).
-2. Vercel сам подхватит Vite по `package.json`; параметры из `vercel.json`: `buildCommand`, `outputDirectory: "dist"`, rewrites для SPA.
-3. В настройках проекта → **Environment Variables** добавь переменную для production:
-    - `VITE_API_URL` — URL бэкенда (например `https://api.example.com`).
-4. Деплой по push в основную ветку или по кнопке Deploy.
-
-Переменные задаются в панели Vercel; при сборке они подставляются в код как `import.meta.env.VITE_API_URL`.
-
-### Вариант 2: Docker (nginx)
-
-Файлы `Dockerfile` и `nginx.conf` — сборка приложения в образе и раздача статики через Nginx (свой сервер, Kubernetes, любой хостинг с Docker).
-
-1. **Сборка образа** (в корне проекта):
-
-    ```bash
-    docker build -t frontend-template .
-    ```
-
-    Чтобы задать URL API на этапе сборки:
-
-    ```bash
-    docker build --build-arg VITE_API_URL=https://api.example.com -t frontend-template .
-    ```
-
-2. **Запуск контейнера**:
-
-    ```bash
-    docker run -p 8080:80 frontend-template
-    ```
-
-    Приложение будет доступно на `http://localhost:8080`.
-
-3. **Production:** если не передавали `VITE_API_URL` при сборке, нужно либо пересобрать с `--build-arg`, либо настроить прокси в `nginx.conf` (доп. `location /api` с `proxy_pass` на бэкенд) и пересобрать образ.
-
-Схема образа: стадия **builder** (Node) — `npm ci` и `npm run build`; стадия **production** (Alpine + Nginx) — копирование `dist` и конфига Nginx. Nginx отдаёт файлы из `/usr/share/nginx/html` и для любого пути без файла отдаёт `index.html` (SPA).
+Приложение будет на `http://localhost:8080`. Если не передавали `VITE_API_URL` при сборке — пересобери с `--build-arg` или настрой прокси в `nginx.conf` на бэкенд.
 
 ## Доступность (a11y)
 
