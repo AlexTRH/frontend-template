@@ -2,6 +2,10 @@
 
 Шаблон фронтенда для внутренних проектов. Цель — чтобы **стажёры и бэкендеры**, не знающие фронт, могли сразу писать код, брать за основу и не тратить время на настройку.
 
+## Стек
+
+**React 19** · **TypeScript** · **Vite** · **Tailwind CSS** · **shadcn/ui** (Radix) · **TanStack Query** · **Zustand** · **React Hook Form** + **Zod** · **axios** · **i18next** · **Sonner** (toast). Тесты: **Vitest**, **Playwright**. Моки в dev: **MSW**.
+
 ## Что внутри (целевой костяк)
 
 - **Архитектура** — FSD из коробки, правильная структура папок и импортов
@@ -35,7 +39,7 @@ npm run dev   # или  yarn dev
 
 Остальные скрипты: `build`, `lint`, `lint:fix`, `format`, `preview`, `test:unit` (Vitest), `test:e2e` (Playwright; при прогоне сам поднимает dev-сервер). В репозитории один lock-файл — `package-lock.json` (npm). После клона выполни `npm install`; при желании можно использовать yarn (`yarn` создаст `yarn.lock` в своём проекте).
 
-1. Правила для AI — `cursor-rules-portable.md` и `.cursor/rules/`
+1. **Быстрый старт** — в `docs/QUICKSTART.md`: установка, первый запуск, что посмотреть.
 2. **Где что искать** — в `docs/EXAMPLES-IN-TEMPLATE.md`: указатель по темам (архитектура, конфиги, переводы, тема, константы, енумы, компоненты, страницы, API, env, картинки, иконки, хуки) и карта «задача → пример».
 3. **Эталон структуры (FSD)** — в `docs/STRUCTURE.md`: дерево слоёв, правила импортов, где что класть.
 4. **Какой компонент когда использовать** — в `docs/WHICH-COMPONENT-WHEN.md`: формы, кнопки, модалки, таблицы, хуки и т.д.
@@ -45,12 +49,11 @@ npm run dev   # или  yarn dev
 ## Что уже есть в костяке
 
 - **app**: main, providers (Router, Theme, Query, ErrorBoundary, i18n), роутер с конфигом
-- **shared**: axios-клиент (`api/client.ts`), path aliases, типы, контекст темы, i18n (en/ru), UI (Button, Input, Label, Form, Dialog, Card, Table, PageLoader, Error, Toaster)
+- **shared**: axios-клиент (`api/client.ts`, interceptors: token, 401/403/5xx + toast), path aliases, типы, store/auth (Zustand + persist), константы, i18n (en/ru), UI (Button, Input, Label, Form, Dialog, Card, Table, PageLoader, Error, Toaster и др.)
 - **widgets/layouts/main-layout**: сайдбар (Dashboard, Items, Settings), header (тема + язык + user menu), `<Outlet />`
 - **entities/item**, **entities/user**: типы, API, хуки (например `useItemsQuery`)
 - **features/create-item**, **features/auth**, **features/theme-toggle**: модалка создания, логин/демо-вход, переключатель темы; валидация форм через Zod с переводами (`getLoginSchema(t)`, `getCreateItemSchema(t)`)
-- **pages**: **Dashboard**, **Items** (таблица, поиск, фильтр, пагинация, ссылки на деталь), **Item detail** (`/items/:id`), **Settings**, **Login** (форма + демо-вход), not-found
-- **shared**: api/client (interceptors: token, 401/403/5xx + toast), store/auth (Zustand + persist), config/constants (пример констант), config/i18n (en/ru), UI-компоненты
+- **pages**: **Dashboard**, **Items** (таблица, поиск, фильтр, пагинация, ссылки на деталь), **Item detail** (`/items/:id`), **Settings**, **Login** (форма + демо-вход), **Компоненты** (dev), not-found
 - **i18n**: тексты в `common`, `dashboard`, `items`, `login`, `settings`, `validation` (en + ru)
 - **MSW**: при `VITE_USE_MSW=true` — список items, создание, логин без бэкенда
 
